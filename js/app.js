@@ -53,9 +53,9 @@ installBtn.addEventListener('click', () => {
     deferredPrompt.prompt();
     deferredPrompt.userChoice.then(choiceResult => {
       if (choiceResult.outcome === 'accepted') {
-        console.log('👍 Usuario aceptó la instalación');
+        console.log('Usuario aceptó la instalación');
       } else {
-        console.log('👎 Usuario rechazó la instalación');
+        console.log('Usuario rechazó la instalación');
       }
       deferredPrompt = null;
     });

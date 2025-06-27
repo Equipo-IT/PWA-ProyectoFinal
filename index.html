@@ -11,21 +11,16 @@
 
   <!-- Navbar -->
   <div class="navbar">
-    <button onclick="goToSection(0)">
-      <img src="img/icono1.png" alt="Inicio" />
-    </button>
-    <button onclick="goToSection(1)">
-      <img src="img/icono2.png" alt="Consejos" />
-    </button>
-    <button onclick="goToSection(2)">
-      <img src="img/icono3.png" alt="Calculadora de Impacto" />
-    </button>
-    <button onclick="goToSection(3)">
-      <img src="img/icono4.png" alt="Desafio del dia" />
-    </button>
-    <button onclick="goToSection(4)">
-      <img src="img/icono5.png" alt="Comentarios" />
-    </button>
+    <div class="nav-buttons">
+      <button onclick="goToSection(0)">Inicio</button>
+      <button onclick="goToSection(1)">Consejos</button>
+      <button onclick="goToSection(2)">Calculadora</button>
+      <button onclick="goToSection(3)">Desafío</button>
+      <button onclick="goToSection(4)">Comentarios</button>
+    </div>
+    <div class="nav-logo">
+      <img src="img/Logo.png" alt="Logo EcoReto" />
+    </div>
   </div>
 
   <!-- Botones de navegación fuera del contenedor -->
@@ -37,7 +32,7 @@
       <div class="section active">Sección 1: Introducción</div>
       <div class="section">Sección 2: Consejos</div>
       <div class="section">Sección 3: Calculadora de Impacto</div>
-      <div class="section">Sección 4: Desafio del dia</div>
+      <div class="section">Sección 4: Desafío del Día</div>
       <div class="section">Sección 5: Comentarios</div>
     </section>
   </main>
