@@ -6,42 +6,40 @@
   <title>EcoReto</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-something..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 
   <!-- Navbar -->
-  <div class="navbar">
-    <div class="nav-buttons">
-      <button onclick="goToSection(0)">Inicio</button>
-      <button onclick="goToSection(1)">Consejos</button>
-      <button onclick="goToSection(2)">Calculadora</button>
-      <button onclick="goToSection(3)">Desafío</button>
-      <button onclick="goToSection(4)">Comentarios</button>
+  <nav class="navbar">
+    <div class="navbar-icons">
+      <button onclick="goToSection(0)" title="Inicio"><i class="fas fa-house"></i></button>
+      <button onclick="goToSection(1)" title="Consejos"><i class="fas fa-lightbulb"></i></button>
+      <button onclick="goToSection(2)" title="Calculadora"><i class="fas fa-calculator"></i></button>
+      <button onclick="goToSection(3)" title="Desafío"><i class="fas fa-running"></i></button>
+      <button onclick="goToSection(4)" title="Comentarios"><i class="fas fa-comment"></i></button>
     </div>
-    <div class="nav-logo">
-      <img src="img/Logo.png" alt="Logo EcoReto" />
+    <div class="navbar-title">
+      <img src="img/Logo.png" alt="Logo" />
+      <span>EcoReto</span>
     </div>
-  </div>
+  </nav>
 
-  <!-- Botones de navegación fuera del contenedor -->
-  <button class="nav-btn left" onclick="prevSection()">&lt;</button>
-
-  <!-- Contenedor principal -->
+  <!-- Contenido principal -->
   <main class="container">
     <section id="sections">
       <div class="section active">Sección 1: Introducción</div>
       <div class="section">Sección 2: Consejos</div>
       <div class="section">Sección 3: Calculadora de Impacto</div>
-      <div class="section">Sección 4: Desafío del Día</div>
+      <div class="section">Sección 4: Desafío del día</div>
       <div class="section">Sección 5: Comentarios</div>
     </section>
   </main>
 
-  <!-- Botones de navegación fuera del contenedor -->
+  <!-- Botones de navegación -->
+  <button class="nav-btn left" onclick="prevSection()">&lt;</button>
   <button class="nav-btn right" onclick="nextSection()">&gt;</button>
-
-  <!-- Botón de instalación -->
-  <button id="btnInstall" style="display:none;">Instalar EcoReto</button>
+  <button id="btnInstall">Instalar EcoReto</button>
 
   <script src="js/app.js"></script>
 </body>
