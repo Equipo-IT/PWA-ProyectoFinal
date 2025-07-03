@@ -1,22 +1,104 @@
 {
-  "name": "EcoReto",
+  "name": "EcoReto - Acción por el Clima",
   "short_name": "EcoReto",
-  "description": "Una app educativa que promueve la conciencia climática a través de retos interactivos basados en el ODS 13 - Acción por el Clima.",
-  "start_url": "./index.html",
+  "description": "App interactiva que promueve la sostenibilidad mediante retos diarios. Contribuye al ODS 13 de la ONU contra el cambio climático.",
+  "start_url": "/index.html?source=pwa",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "display_override": ["standalone", "minimal-ui"],
+  "background_color": "#2E7D32",
   "theme_color": "#4CAF50",
-  "orientation": "portrait",
-  "icons": [
+  "orientation": "portrait-primary",
+  "categories": ["education", "lifestyle", "productivity"],
+  "dir": "ltr",
+  "lang": "es-ES",
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "shortcuts": [
     {
-      "src": "img/Logo1.png",
-      "sizes": "192x192",
-      "type": "image/png"
+      "name": "Reto del Día",
+      "short_name": "Reto Diario",
+      "description": "Completa el desafío ecológico de hoy",
+      "url": "/index.html?section=challenge",
+      "icons": [{ "src": "img/icons/challenge-192.png", "sizes": "192x192" }]
     },
     {
-      "src": "img/Logo2.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "name": "Calculadora de Impacto",
+      "short_name": "Calculadora CO₂",
+      "description": "Mide tu huella de carbono",
+      "url": "/index.html?section=calculator",
+      "icons": [{ "src": "img/icons/calc-192.png", "sizes": "192x192" }]
     }
-  ]
+  ],
+  "screenshots": [
+    {
+      "src": "img/screenshots/screenshot1.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "img/screenshots/screenshot2.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "icons": [
+    {
+      "src": "img/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "img/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "img/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "img/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "img/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "img/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "img/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "img/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "features": [
+    "Cross Platform",
+    "fast",
+    "simple",
+    "Offline Capabilities"
+  ],
+  "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7"
 }

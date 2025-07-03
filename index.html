@@ -3,42 +3,122 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EcoReto</title>
+  <meta name="description" content="App educativa que promueve la conciencia climática con retos interactivos basados en el ODS 13">
+  <title>EcoReto - Acción por el Clima</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="css/styles.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-something..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <!-- Fuentes de Google -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-
-  <!-- Navbar -->
+  <!-- Navbar mejorado -->
   <nav class="navbar">
-    <div class="navbar-icons">
-      <button onclick="goToSection(0)" title="Inicio"><i class="fas fa-house"></i></button>
-      <button onclick="goToSection(1)" title="Consejos"><i class="fas fa-lightbulb"></i></button>
-      <button onclick="goToSection(2)" title="Calculadora"><i class="fas fa-calculator"></i></button>
-      <button onclick="goToSection(3)" title="Desafío"><i class="fas fa-running"></i></button>
-      <button onclick="goToSection(4)" title="Comentarios"><i class="fas fa-comment"></i></button>
+    <div class="navbar-brand">
+      <img src="img/Logo5.png" alt="EcoReto Logo" class="logo" />
+      <span class="app-name">EcoReto</span>
     </div>
-    <div class="navbar-title">
-      <img src="img/Logo5.png" alt="Logo" />
+    <div class="navbar-icons">
+      <button onclick="goToSection(0)" title="Inicio" class="nav-icon">
+        <i class="fas fa-home"></i>
+        <span class="tooltip">Inicio</span>
+      </button>
+      <button onclick="goToSection(1)" title="Consejos" class="nav-icon">
+        <i class="fas fa-lightbulb"></i>
+        <span class="tooltip">Consejos</span>
+      </button>
+      <button onclick="goToSection(2)" title="Calculadora" class="nav-icon">
+        <i class="fas fa-calculator"></i>
+        <span class="tooltip">Impacto</span>
+      </button>
+      <button onclick="goToSection(3)" title="Desafío" class="nav-icon">
+        <i class="fas fa-trophy"></i>
+        <span class="tooltip">Desafío</span>
+      </button>
+      <button onclick="goToSection(4)" title="Comunidad" class="nav-icon">
+        <i class="fas fa-users"></i>
+        <span class="tooltip">Comunidad</span>
+      </button>
     </div>
   </nav>
 
-  <!-- Contenido principal -->
+  <!-- Contenido principal mejorado -->
   <main class="container">
     <section id="sections">
-      <div class="section active">Sección 1: Introducción</div>
-      <div class="section">Sección 2: Consejos</div>
-      <div class="section">Sección 3: Calculadora de Impacto</div>
-      <div class="section">Sección 4: Desafío del día</div>
-      <div class="section">Sección 5: Comentarios</div>
+      <!-- Sección 1: Inicio -->
+      <div class="section active">
+        <div class="hero">
+          <h1>Únete al Cambio Climático</h1>
+          <p class="tagline">Pequeñas acciones generan grandes impactos</p>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <i class="fas fa-leaf"></i>
+              <h3>+1,200</h3>
+              <p>Retos completados</p>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-users"></i>
+              <h3>+850</h3>
+              <p>Usuarios activos</p>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-globe-americas"></i>
+              <h3>15.7t</h3>
+              <p>CO₂ reducido</p>
+            </div>
+          </div>
+          <button class="cta-button" onclick="goToSection(3)">Tomar el reto de hoy</button>
+        </div>
+      </div>
+      
+      <!-- Sección 2: Consejos -->
+      <div class="section">
+        <h2 class="section-title">Consejos Ecológicos</h2>
+        <div class="tips-container">
+          <!-- Los consejos se pueden cargar dinámicamente desde JS -->
+        </div>
+      </div>
+      
+      <!-- Sección 3: Calculadora -->
+      <div class="section">
+        <h2 class="section-title">Tu Impacto Ambiental</h2>
+        <div class="calculator">
+          <!-- Contenido de la calculadora -->
+        </div>
+      </div>
+      
+      <!-- Sección 4: Desafío -->
+      <div class="section">
+        <h2 class="section-title">Desafío del Día</h2>
+        <div class="challenge-card">
+          <!-- Contenido del desafío -->
+        </div>
+      </div>
+      
+      <!-- Sección 5: Comunidad -->
+      <div class="section">
+        <h2 class="section-title">Comunidad EcoReto</h2>
+        <div class="community-feed">
+          <!-- Contenido de comentarios/interacciones -->
+        </div>
+      </div>
     </section>
   </main>
 
-  <!-- Botones de navegación -->
-  <button class="nav-btn left" onclick="prevSection()">&lt;</button>
-  <button class="nav-btn right" onclick="nextSection()">&gt;</button>
-  <button id="btnInstall">Instalar EcoReto</button>
+  <!-- Botón de instalación mejorado -->
+  <button id="btnInstall" class="install-btn">
+    <i class="fas fa-download"></i> Instalar App
+  </button>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <p>EcoReto - Contribuyendo al ODS 13: Acción por el Clima</p>
+    <div class="social-links">
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-facebook"></i></a>
+    </div>
+  </footer>
 
   <script src="js/app.js"></script>
 </body>
