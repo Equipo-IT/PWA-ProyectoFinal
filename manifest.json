@@ -2,8 +2,8 @@
   "name": "EcoReto - Acción por el Clima",
   "short_name": "EcoReto",
   "description": "App interactiva que promueve la sostenibilidad mediante retos diarios. Contribuye al ODS 13 de la ONU contra el cambio climático.",
-  "start_url": "/index.html?source=pwa",
-  "scope": "/",
+  "start_url": "/PWA-ProyectoFinal/index.html?source=pwa",
+  "scope": "/PWA-ProyectoFinal/",
   "display": "standalone",
   "display_override": ["standalone", "minimal-ui"],
   "background_color": "#2E7D32",
@@ -14,20 +14,52 @@
   "lang": "es-ES",
   "prefer_related_applications": false,
   "related_applications": [],
+  "icons": [
+    {
+      "src": "img/Logo1.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "img/Logo2.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "img/Logo3.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "img/Logo4.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "img/Logo5.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
   "shortcuts": [
     {
       "name": "Reto del Día",
       "short_name": "Reto Diario",
       "description": "Completa el desafío ecológico de hoy",
-      "url": "/index.html?section=challenge",
-      "icons": [{ "src": "img/icons/challenge-192.png", "sizes": "192x192" }]
+      "url": "/PWA-ProyectoFinal/index.html?section=challenge",
+      "icons": [{ "src": "img/Logo4.png", "sizes": "192x192", "type": "image/png" }]
     },
     {
       "name": "Calculadora de Impacto",
       "short_name": "Calculadora CO₂",
       "description": "Mide tu huella de carbono",
-      "url": "/index.html?section=calculator",
-      "icons": [{ "src": "img/icons/calc-192.png", "sizes": "192x192" }]
+      "url": "/PWA-ProyectoFinal/index.html?section=calculator",
+      "icons": [{ "src": "img/Logo4.png", "sizes": "192x192", "type": "image/png" }]
     }
   ],
   "screenshots": [
@@ -43,62 +75,5 @@
       "type": "image/png",
       "form_factor": "wide"
     }
-  ],
-  "icons": [
-    {
-      "src": "img/icons/icon-72x72.png",
-      "sizes": "72x72",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "img/icons/icon-96x96.png",
-      "sizes": "96x96",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "img/icons/icon-128x128.png",
-      "sizes": "128x128",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "img/icons/icon-144x144.png",
-      "sizes": "144x144",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "img/icons/icon-152x152.png",
-      "sizes": "152x152",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "img/icons/icon-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "img/icons/icon-384x384.png",
-      "sizes": "384x384",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "img/icons/icon-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
-  ],
-  "features": [
-    "Cross Platform",
-    "fast",
-    "simple",
-    "Offline Capabilities"
-  ],
-  "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7"
+  ]
 }

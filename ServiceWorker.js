@@ -4,14 +4,12 @@ const CACHE_NAME = `ecoreto-cache-${CACHE_VERSION}`;
 
 // Archivos esenciales para el funcionamiento offline
 const PRECACHE_ASSETS = [
-  '/',
-  '/index.html',
-  '/css/styles.css',
-  '/js/app.js',
-  '/img/Logo5.png',
-  '/img/Fondo1.jpg',
-  '/img/icons/icon-192x192.png',
-  '/img/icons/icon-512x512.png',
+  '/PWA-ProyectoFinal/',
+  '/PWA-ProyectoFinal/index.html',
+  '/PWA-ProyectoFinal/css/styles.css',
+  '/PWA-ProyectoFinal/js/app.js',
+  '/PWA-ProyectoFinal/img/Logo5.png',
+  '/PWA-ProyectoFinal/img/Fondo1.jpg',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css',
   'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Montserrat:wght@400;700&display=swap'
 ];
