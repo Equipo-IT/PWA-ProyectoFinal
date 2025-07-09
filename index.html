@@ -42,6 +42,10 @@
         <i class="fas fa-users"></i>
         <span class="tooltip">Comunidad</span>
       </button>
+      <button onclick="goToSection(5)" title="Comentarios" class="nav-icon">
+        <i class="fas fa-comment"></i>
+        <span class="tooltip">Comentarios</span>
+      </button>
     </div>
   </nav>
 
@@ -103,6 +107,42 @@
         <h2 class="section-title">Comunidad EcoReto</h2>
         <div class="community-feed">
           <!-- Contenido de comentarios/interacciones -->
+        </div>
+      </div>
+
+      <!-- Sección 6: Comentarios -->
+      <div class="section">
+        <div class="comments-section">
+          <h2 class="section-title">Contáctanos</h2>
+          <p class="section-subtitle">Tu opinión es importante para nosotros</p>
+          
+          <div class="comment-card">
+            <form id="commentForm" class="comment-form">
+              <div class="form-message" id="formMessage"></div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="name">Nombre completo</label>
+                  <input type="text" id="name" name="name" placeholder="Ingresa tu nombre" required>
+                </div>
+                <div class="form-group">
+                  <label for="email">Correo electrónico</label>
+                  <input type="email" id="email" name="email" placeholder="tucorreo@ejemplo.com" required>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="comment">Tu mensaje</label>
+                <textarea id="comment" name="comment" rows="5" placeholder="Escribe aquí tu comentario..." required></textarea>
+              </div>
+              
+              <div class="form-footer">
+                <button type="submit" class="submit-btn">
+                  <i class="fas fa-paper-plane"></i> Enviar mensaje
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </section>
