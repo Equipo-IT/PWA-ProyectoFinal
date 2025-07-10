@@ -252,7 +252,7 @@ function setupInstallPrompt() {
   window.addEventListener('appinstalled', () => {
     console.log('PWA instalada');
     installBtn.style.display = 'none';
-    deferredPrompt = null;
+    deferredPrompt = null;5
   });
 }
 
