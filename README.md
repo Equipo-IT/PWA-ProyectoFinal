@@ -50,9 +50,9 @@ Asesor académico: *[Agrega el nombre si lo deseas]*
 
 ## 📬 Contacto
 
-📧 roelbrandon99@gmail.com  
+📧 royrivas484@gmail.com 
+🏫 20656@virtual.utsc.edu.mx
 🔗 [Repositorio en GitHub](https://github.com/Equipo-IT/PWA-ProyectoFinal)
-
 ---
 
 > "Pequeñas acciones, grandes cambios. Sé parte del EcoReto." ♻️
