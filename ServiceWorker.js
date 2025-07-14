@@ -1,177 +1,277 @@
-// Versión del cache - cambiar para actualizar recursos
-const CACHE_VERSION = 'v2.0.0';
+// ==============================
+// VERSIÓN Y CACHÉ
+// ==============================
+const CACHE_VERSION = 'v3.0.1';
 const CACHE_NAME = `ecoreto-cache-${CACHE_VERSION}`;
+const DYNAMIC_CACHE_NAME = `ecoreto-dynamic-${CACHE_VERSION}`;
 
-// Archivos esenciales para el funcionamiento offline
+// ==============================
+// ARCHIVOS A PRECACHEAR
+// ==============================
 const PRECACHE_ASSETS = [
   '/PWA-ProyectoFinal/',
   '/PWA-ProyectoFinal/index.html',
+  '/PWA-ProyectoFinal/manifest.json',
+  '/PWA-ProyectoFinal/ServiceWorker.js',
+
+  // CSS
   '/PWA-ProyectoFinal/css/styles.css',
+  '/PWA-ProyectoFinal/css/secciones.css',
+  '/PWA-ProyectoFinal/css/responsive.css',
+  '/PWA-ProyectoFinal/css/navbar.css',
+  '/PWA-ProyectoFinal/css/layout.css',
+  '/PWA-ProyectoFinal/css/install.css',
+  '/PWA-ProyectoFinal/css/home.css',
+  '/PWA-ProyectoFinal/css/footer.css',
+  '/PWA-ProyectoFinal/css/comentarios.css',
+  '/PWA-ProyectoFinal/css/base.css',
+
+  // JS
   '/PWA-ProyectoFinal/js/app.js',
+  '/PWA-ProyectoFinal/js/pwa.js',
+  '/PWA-ProyectoFinal/js/tips.js',
+  '/PWA-ProyectoFinal/js/comments.js',
+  '/PWA-ProyectoFinal/js/calculadora.js',
+  '/PWA-ProyectoFinal/js/desafio.js',
+  '/PWA-ProyectoFinal/js/comunidad.js',
+
+  // IMG
+  '/PWA-ProyectoFinal/img/Logo1.png',
+  '/PWA-ProyectoFinal/img/Logo3.png',
+  '/PWA-ProyectoFinal/img/Logo4.png',
   '/PWA-ProyectoFinal/img/Logo5.png',
-  '/PWA-ProyectoFinal/img/Fondo1.jpg',
+  '/PWA-ProyectoFinal/img/Logo6.png',
+  '/PWA-ProyectoFinal/img/Fondo1.png',
+
+  // Fuentes y CDNs
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css',
   'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Montserrat:wght@400;700&display=swap'
 ];
 
-// Estrategia: Cache First with Network Fallback
-const cacheFirst = async (request) => {
+// ==============================
+// ESTRATEGIAS DE CACHÉ
+// ==============================
+const cacheFirstWithUpdate = async (request) => {
   const cache = await caches.open(CACHE_NAME);
-  const cachedResponse = await cache.match(request);
-  
-  if (cachedResponse) {
-    return cachedResponse;
-  }
-  
-  try {
-    const networkResponse = await fetch(request);
-    
-    // Clonamos la respuesta para guardarla en cache
-    if (networkResponse.ok) {
-      cache.put(request, networkResponse.clone());
+  const cached = await cache.match(request);
+
+  fetch(request).then(async (response) => {
+    if (response.ok) {
+      const dynamic = await caches.open(DYNAMIC_CACHE_NAME);
+      dynamic.put(request, response.clone());
     }
-    
-    return networkResponse;
-  } catch (error) {
-    // Fallback para cuando no hay conexión
-    return new Response(JSON.stringify({
-      error: 'No tienes conexión y este recurso no está en caché'
-    }), {
-      status: 408,
-      headers: { 'Content-Type': 'application/json' }
-    });
-  }
+  }).catch(() => {});
+
+  return cached || fetch(request);
 };
 
-// Estrategia: Network First with Cache Fallback
-const networkFirst = async (request) => {
+const networkFirstWithCache = async (request) => {
   try {
-    const networkResponse = await fetch(request);
-    
-    // Actualizamos el cache
-    const cache = await caches.open(CACHE_NAME);
-    cache.put(request, networkResponse.clone());
-    
-    return networkResponse;
-  } catch (error) {
-    const cachedResponse = await caches.match(request);
-    return cachedResponse || new Response('Offline - Contenido no disponible', {
-      status: 503,
-      headers: { 'Content-Type': 'text/plain' }
-    });
+    const response = await fetch(request);
+    const dynamic = await caches.open(DYNAMIC_CACHE_NAME);
+    dynamic.put(request, response.clone());
+    return response;
+  } catch {
+    const staticCache = await caches.match(request, { cacheName: CACHE_NAME });
+    if (staticCache) return staticCache;
+
+    const dynamicCache = await caches.match(request, { cacheName: DYNAMIC_CACHE_NAME });
+    if (dynamicCache) return dynamicCache;
+
+    if (request.destination === 'document') {
+      return new Response('<h1>Estás offline</h1><p>Conéctate a internet para usar EcoReto.</p>', {
+        headers: { 'Content-Type': 'text/html' }
+      });
+    }
+
+    return new Response('', { status: 503, statusText: 'Offline' });
   }
 };
 
-// Instalación del Service Worker
+// ==============================
+// EVENTOS DEL SERVICE WORKER
+// ==============================
 self.addEventListener('install', (event) => {
-  console.log('[Service Worker] Instalando...');
-  
+  console.log('[SW] Instalando versión', CACHE_VERSION);
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then((cache) => {
-        console.log('[Service Worker] Almacenando en caché recursos esenciales');
-        return cache.addAll(PRECACHE_ASSETS);
-      })
+      .then(cache => cache.addAll(PRECACHE_ASSETS))
       .then(() => self.skipWaiting())
   );
 });
 
-// Activación del Service Worker
 self.addEventListener('activate', (event) => {
-  console.log('[Service Worker] Activado');
-  
+  console.log('[SW] Activado');
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cache) => {
-          if (cache !== CACHE_NAME) {
-            console.log('[Service Worker] Eliminando cache antiguo:', cache);
-            return caches.delete(cache);
-          }
-        })
-      );
-    }).then(() => self.clients.claim())
+    (async () => {
+      const keys = await caches.keys();
+      await Promise.all(keys.map(key => {
+        if (![CACHE_NAME, DYNAMIC_CACHE_NAME].includes(key)) {
+          console.log('[SW] Eliminando caché antigua:', key);
+          return caches.delete(key);
+        }
+      }));
+      await self.clients.claim();
+      const clients = await self.clients.matchAll();
+      clients.forEach(client => client.postMessage({ type: 'SW_ACTIVATED' }));
+    })()
   );
 });
 
-// Interceptar solicitudes de red
 self.addEventListener('fetch', (event) => {
-  const url = new URL(event.request.url);
-  
-  // Estrategias diferentes por tipo de recurso
-  if (event.request.method === 'GET') {
-    // Para documentos HTML, usa Network First
-    if (event.request.destination === 'document') {
-      event.respondWith(networkFirst(event.request));
-    }
-    // Para CSS, JS, imágenes, usa Cache First
-    else if (
-      event.request.destination === 'style' ||
-      event.request.destination === 'script' ||
-      event.request.destination === 'image'
-    ) {
-      event.respondWith(cacheFirst(event.request));
-    }
-    // Para fuentes y otros recursos
-    else {
-      event.respondWith(networkFirst(event.request));
-    }
+  const request = event.request;
+  const url = new URL(request.url);
+
+  if (request.method !== 'GET' || !url.origin.startsWith(self.location.origin)) return;
+
+  switch (true) {
+    case request.destination === 'document':
+      event.respondWith(networkFirstWithCache(request));
+      break;
+
+    case url.pathname.startsWith('/api/'):
+      event.respondWith(fetch(request).catch(() => new Response('', { status: 503 })));
+      break;
+
+    case ['style', 'script', 'image', 'font'].includes(request.destination):
+      event.respondWith(cacheFirstWithUpdate(request));
+      break;
+
+    default:
+      event.respondWith(networkFirstWithCache(request));
   }
 });
 
-// Manejo de mensajes desde la app
+// ==============================
+// MENSAJES DESDE LA APP
+// ==============================
 self.addEventListener('message', (event) => {
-  if (event.data.action === 'skipWaiting') {
-    self.skipWaiting();
+  const { action, url, data, requestUrl, callbackId } = event.data || {};
+
+  switch (action) {
+    case 'skipWaiting':
+      self.skipWaiting();
+      break;
+
+    case 'updateCache':
+      caches.open(DYNAMIC_CACHE_NAME).then(cache => cache.put(url, new Response(JSON.stringify(data))));
+      break;
+
+    case 'getCachedData':
+      caches.match(requestUrl).then(response => {
+        if (response) {
+          response.json().then(data => {
+            event.ports[0].postMessage({ callbackId, data });
+          });
+        } else {
+          event.ports[0].postMessage({ callbackId, error: 'Not cached' });
+        }
+      });
+      break;
   }
 });
 
-// Sincronización en background
+// ==============================
+// BACKGROUND SYNC
+// ==============================
 self.addEventListener('sync', (event) => {
   if (event.tag === 'sync-challenge-data') {
-    console.log('[Service Worker] Sincronizando datos de desafíos...');
+    console.log('[SW] Sincronizando desafíos...');
     event.waitUntil(syncChallengeData());
+  }
+
+  if (event.tag === 'sync-comments') {
+    console.log('[SW] Sincronizando comentarios...');
+    event.waitUntil(syncPendingComments());
   }
 });
 
 async function syncChallengeData() {
-  // Lógica para sincronizar datos cuando la conexión regresa
-  // Puedes implementar IndexedDB o enviar datos al servidor
+  const cache = await caches.open(DYNAMIC_CACHE_NAME);
+  const response = await fetch('/api/challenges/latest');
+  if (response.ok) {
+    await cache.put('/api/challenges/latest', response.clone());
+    await self.registration.showNotification('Datos actualizados', {
+      body: 'Tus desafíos han sido sincronizados',
+      icon: '/img/icons/icon-192x192.png'
+    });
+    return response;
+  }
+  throw new Error('Error al sincronizar desafíos');
 }
 
-// Manejo de notificaciones push
-self.addEventListener('push', (event) => {
-  const data = event.data.json();
-  
-  const options = {
-    body: data.body,
-    icon: '/img/icons/icon-192x192.png',
-    badge: '/img/icons/icon-96x96.png',
-    vibrate: [200, 100, 200],
-    data: {
-      url: data.url || '/'
+async function syncPendingComments() {
+  const db = await openCommentsDB();
+  const pending = await db.getAll('pending');
+  for (const comment of pending) {
+    try {
+      const response = await fetch('/api/comments', {
+        method: 'POST',
+        body: JSON.stringify(comment),
+        headers: { 'Content-Type': 'application/json' }
+      });
+      if (response.ok) {
+        await db.delete('pending', comment.id);
+      }
+    } catch (error) {
+      console.error('Error al enviar comentario pendiente:', error);
+      break;
     }
+  }
+}
+
+// ==============================
+// PUSH NOTIFICATIONS
+// ==============================
+self.addEventListener('push', (event) => {
+  const data = event.data?.json() || {
+    title: 'EcoReto',
+    body: '¡Tienes un nuevo desafío esperándote!',
+    icon: '/img/Logo4.png',
+    badge: '/img/Logo3.png',
+    data: { url: '/?section=challenge' }
   };
-  
+
   event.waitUntil(
-    self.registration.showNotification(data.title, options)
+    self.registration.showNotification(data.title, {
+      body: data.body,
+      icon: data.icon,
+      badge: data.badge,
+      vibrate: [200, 100, 200],
+      data: { url: data.data.url }
+    })
   );
 });
 
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
-  
+  const url = event.notification.data?.url || '/';
   event.waitUntil(
-    clients.matchAll({ type: 'window' }).then((clientList) => {
-      for (const client of clientList) {
-        if (client.url === event.notification.data.url && 'focus' in client) {
-          return client.focus();
+    clients.matchAll({ type: 'window', includeUncontrolled: true })
+      .then(clientList => {
+        for (const client of clientList) {
+          if (client.url === url && 'focus' in client) return client.focus();
         }
-      }
-      
-      if (clients.openWindow) {
-        return clients.openWindow(event.notification.data.url);
-      }
-    })
+        return clients.openWindow(url);
+      })
   );
 });
+
+// ==============================
+// INDEXEDDB: PENDIENTES OFFLINE
+// ==============================
+function openCommentsDB() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open('EcoRetoDB', 1);
+
+    request.onupgradeneeded = (event) => {
+      const db = event.target.result;
+      if (!db.objectStoreNames.contains('pending')) {
+        db.createObjectStore('pending', { keyPath: 'id' });
+      }
+    };
+
+    request.onsuccess = (event) => resolve(event.target.result);
+    request.onerror = (event) => reject(event.target.error);
+  });
+}

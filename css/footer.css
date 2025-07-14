@@ -1,0 +1,26 @@
+/* Footer */
+.app-footer {
+  background: var(--dark-color);
+  color: var(--text-light);
+  text-align: center;
+  padding: 1.5rem;
+  margin-top: 2rem;
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.social-links a {
+  color: var(--text-light);
+  font-size: 1.2rem;
+  transition: var(--transition);
+}
+
+.social-links a:hover {
+  color: var(--accent-color);
+  transform: translateY(-2px);
+}

@@ -1,0 +1,85 @@
+/* Navbar mejorado */
+.navbar {
+  height: 64px;
+  padding: 0px 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--primary-color);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: var(--shadow);
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  gap: 0.8rem;
+}
+
+.logo {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  padding-bottom: 8px;
+  margin-top: 0px;
+}
+
+.app-name {
+  color: var(--text-light);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  letter-spacing: 0.5px;
+}
+
+.navbar-icons {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-icon {
+  color: var(--text-light);
+  font-size: 1.4rem;
+  cursor: pointer;
+  position: relative;
+  background: none;
+  border-width: initial;
+  border-style: none;
+  border-color: initial;
+  border-image: initial;
+  padding: 0.5rem;
+  transition: var(--transition);
+}
+
+.nav-icon:hover {
+  color: var(--accent-color);
+  transform: translateY(-3px);
+}
+
+.tooltip {
+  position: absolute;
+  bottom: -2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.nav-icon:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+  bottom: -2.5rem;
+}

@@ -1,0 +1,20 @@
+/* Estilos para títulos de sección */
+.section-title {
+  text-align: center;
+  color: var(--dark-color);
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: var(--accent-color);
+}

@@ -9,41 +9,33 @@
   "background_color": "#2E7D32",
   "theme_color": "#4CAF50",
   "orientation": "portrait-primary",
-  "categories": ["education", "lifestyle", "productivity"],
+  "categories": ["education", "lifestyle", "productivity", "social"],
   "dir": "ltr",
   "lang": "es-ES",
-  "prefer_related_applications": false,
-  "related_applications": [],
   "icons": [
+    { "src": "img/Logo1.png", "sizes": "72x72", "type": "image/png", "purpose": "any" },
+    { "src": "img/Logo2.png", "sizes": "96x96", "type": "image/png", "purpose": "any" },
+    { "src": "img/Logo3.png", "sizes": "128x128", "type": "image/png", "purpose": "any" },
+    { "src": "img/Logo4.png", "sizes": "144x144", "type": "image/png", "purpose": "maskable" },
+    { "src": "img/Logo4.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "img/Logo5.png", "sizes": "256x256", "type": "image/png", "purpose": "any" },
+    { "src": "img/Logo5.png", "sizes": "384x384", "type": "image/png", "purpose": "any" },
+    { "src": "img/Logo5.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "screenshots": [
     {
-      "src": "img/Logo1.png",
-      "sizes": "72x72",
+      "src": "img/Fondo1.png",
+      "sizes": "1080x1920",
       "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "img/Logo2.png",
-      "sizes": "96x96",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "img/Logo3.png",
-      "sizes": "144x144",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "img/Logo4.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "form_factor": "narrow",
+      "label": "Pantalla principal de EcoReto mostrando retos diarios"
     },
     {
       "src": "img/Logo5.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "form_factor": "wide",
+      "label": "Logo principal de EcoReto"
     }
   ],
   "shortcuts": [
@@ -51,29 +43,45 @@
       "name": "Reto del Día",
       "short_name": "Reto Diario",
       "description": "Completa el desafío ecológico de hoy",
-      "url": "/PWA-ProyectoFinal/index.html?section=challenge",
-      "icons": [{ "src": "img/Logo4.png", "sizes": "192x192", "type": "image/png" }]
+      "url": "/PWA-ProyectoFinal/index.html?section=challenge&source=pwa_shortcut",
+      "icons": [{ "src": "img/Logo1.png", "sizes": "72x72", "type": "image/png" }]
     },
     {
       "name": "Calculadora de Impacto",
       "short_name": "Calculadora CO₂",
       "description": "Mide tu huella de carbono",
-      "url": "/PWA-ProyectoFinal/index.html?section=calculator",
-      "icons": [{ "src": "img/Logo4.png", "sizes": "192x192", "type": "image/png" }]
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "img/screenshots/screenshot1.png",
-      "sizes": "1080x1920",
-      "type": "image/png",
-      "form_factor": "narrow"
+      "url": "/PWA-ProyectoFinal/index.html?section=calculator&source=pwa_shortcut",
+      "icons": [{ "src": "img/Logo3.png", "sizes": "128x128", "type": "image/png" }]
     },
     {
-      "src": "img/screenshots/screenshot2.png",
-      "sizes": "1920x1080",
-      "type": "image/png",
-      "form_factor": "wide"
+      "name": "Consejos Ecológicos",
+      "short_name": "Consejos",
+      "description": "Aprende hábitos sostenibles",
+      "url": "/PWA-ProyectoFinal/index.html?section=tips&source=pwa_shortcut",
+      "icons": [{ "src": "img/Logo4.png", "sizes": "144x144", "type": "image/png" }]
+    }
+  ],
+  "id": "/PWA-ProyectoFinal/index.html",
+  "protocol_handlers": [
+    {
+      "protocol": "web+ecoreto",
+      "url": "/PWA-ProyectoFinal/index.html?link=%s"
+    }
+  ],
+  "share_target": {
+    "action": "/PWA-ProyectoFinal/index.html?share",
+    "method": "GET",
+    "params": {
+      "title": "name",
+      "text": "description",
+      "url": "link"
+    }
+  },
+  "capture_links": "new-client",
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://tudominio.com/PWA-ProyectoFinal/manifest.json"
     }
   ]
 }

@@ -1,0 +1,27 @@
+:root {
+  --primary-color: #2E7D32;
+  --secondary-color: #4CAF50;
+  --accent-color: #8BC34A;
+  --dark-color: #1B5E20;
+  --light-color: #C8E6C9;
+  --text-color: #333;
+  --text-light: #f5f5f5;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s ease;
+}
+
+/* Reset y estilos base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  color: var(--text-color);
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../img/Fondo1.png') no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+  line-height: 1.6;
+}
