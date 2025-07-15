@@ -12,6 +12,7 @@ function registerServiceWorker() {
       });
   }
 }
+
 // ====================================
 // CONFIGURACIÓN DEL BOTÓN DE INSTALACIÓN
 // ====================================
