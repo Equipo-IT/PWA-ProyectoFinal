@@ -44,8 +44,6 @@
 
 Desarrollado por: **Equipo IT - IDGS10B**  
 Autor principal: **Brandon Roel Martínez Rivas**  
-Asesor académico: *[Agrega el nombre si lo deseas]*
-
 ---
 
 ## 📬 Contacto
@@ -53,6 +51,7 @@ Asesor académico: *[Agrega el nombre si lo deseas]*
 📧 royrivas484@gmail.com 
 🏫 20656@virtual.utsc.edu.mx
 🔗 [Repositorio en GitHub](https://github.com/Equipo-IT/PWA-ProyectoFinal)
+
 ---
 
 > "Pequeñas acciones, grandes cambios. Sé parte del EcoReto." ♻️

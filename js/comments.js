@@ -1,14 +1,32 @@
-function initCommentsSection() {
+// Obtener instancias de Firebase
+const db = window.firebaseDB;
+const { ref, push, set, onValue, query, orderByChild, limitToLast } = window.firebaseDBFunctions || {};
+
+// Función principal para inicializar la sección de comentarios
+export function initCommentsSection() {
+  if (!db) {
+    console.error('Firebase Database no está disponible');
+    return;
+  }
+
   const commentForm = document.getElementById('commentForm');
   if (commentForm) {
     commentForm.addEventListener('submit', handleCommentSubmit);
+    loadComments();
     
     // Validación en tiempo real
     const nameInput = document.getElementById('name');
     const emailInput = document.getElementById('email');
     const commentInput = document.getElementById('comment');
     
-    [nameInput, emailInput, commentInput].forEach(input => {
+    nameInput.addEventListener('input', (e) => {
+      if (isValidName(e.target.value.trim())) {
+        e.target.style.borderColor = '#e0e0e0';
+        removeInputError('name');
+      }
+    });
+    
+    [emailInput, commentInput].forEach(input => {
       input.addEventListener('input', () => {
         if (input.value.trim() !== '') {
           input.style.borderColor = '#e0e0e0';
@@ -19,9 +37,80 @@ function initCommentsSection() {
   }
 }
 
-function handleCommentSubmit(e) {
+// Cargar comentarios
+function loadComments() {
+  if (!db || !ref || !onValue) {
+    console.error('Funciones de Firebase no disponibles');
+    return;
+  }
+
+  const commentsRef = query(
+    ref(db, 'comentarios'),
+    orderByChild('Fecha'),
+    limitToLast(50)
+  );
+
+  const commentsContainer = document.getElementById('communityFeed');
+  
+  if (!commentsContainer) return;
+  
+  commentsContainer.innerHTML = '<div class="loader"><i class="fas fa-spinner fa-spin"></i> Cargando comentarios...</div>';
+
+  onValue(commentsRef, (snapshot) => {
+    const data = snapshot.val();
+    commentsContainer.innerHTML = '';
+    
+    if (data) {
+      const commentsArray = [];
+      
+      Object.entries(data).forEach(([key, comment]) => {
+        if (comment.Estatus === 'Aprobado') {
+          commentsArray.push({
+            id: key,
+            ...comment
+          });
+        }
+      });
+
+      // Ordenar por fecha descendente
+      commentsArray.sort((a, b) => {
+        const dateA = new Date(a.Fecha.split('/').reverse().join('/'));
+        const dateB = new Date(b.Fecha.split('/').reverse().join('/'));
+        return dateB - dateA;
+      });
+
+      commentsArray.forEach(comment => {
+        const commentElement = document.createElement('div');
+        commentElement.className = 'comment-card';
+        commentElement.innerHTML = `
+          <div class="comment-header">
+            <h4>${comment.Nombre || 'Anónimo'}</h4>
+            <small>${comment.Fecha || formatDate(new Date())}</small>
+          </div>
+          <p class="comment-message">${comment.Comentario || ''}</p>
+        `;
+        commentsContainer.appendChild(commentElement);
+      });
+    } else {
+      commentsContainer.innerHTML = '<p class="no-comments">No hay comentarios aún. ¡Sé el primero!</p>';
+    }
+  }, (error) => {
+    console.error("Error al cargar comentarios:", error);
+    if (commentsContainer) {
+      commentsContainer.innerHTML = '<p class="error-comments">Error al cargar comentarios</p>';
+    }
+  });
+}
+
+// Manejar envío de comentarios
+async function handleCommentSubmit(e) {
   e.preventDefault();
   
+  if (!db || !ref || !push || !set) {
+    console.error('Funciones de Firebase no disponibles');
+    return;
+  }
+
   const form = e.target;
   const formMessage = document.getElementById('formMessage');
   const name = document.getElementById('name').value.trim();
@@ -29,13 +118,19 @@ function handleCommentSubmit(e) {
   const comment = document.getElementById('comment').value.trim();
   const submitBtn = form.querySelector('button[type="submit"]');
   
+  // Resetear mensajes
   formMessage.textContent = '';
   formMessage.className = 'form-message';
+  formMessage.style.opacity = '1';
   
+  // Validación
   let isValid = true;
   
   if (!name) {
     showInputError('name', 'Por favor ingresa tu nombre');
+    isValid = false;
+  } else if (!isValidName(name)) {
+    showInputError('name', 'Nombre completo no válido');
     isValid = false;
   }
   
@@ -57,31 +152,54 @@ function handleCommentSubmit(e) {
     return;
   }
 
+  // Deshabilitar botón
   submitBtn.disabled = true;
   const originalBtnText = submitBtn.innerHTML;
   submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
   
-  simulateFormSubmission()
-    .then(() => {
-      showFormMessage('¡Gracias por tu comentario! Tu mensaje ha sido enviado correctamente.', 'success');
-      form.reset();
-    })
-    .catch(error => {
-      showFormMessage('Hubo un error al enviar tu mensaje. Por favor intenta nuevamente.', 'error');
-      console.error('Error al enviar comentario:', error);
-    })
-    .finally(() => {
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = originalBtnText;
+  try {
+    const comentariosRef = ref(db, 'comentarios');
+    const nuevoComentarioRef = push(comentariosRef);
+    
+    await set(nuevoComentarioRef, {
+      Nombre: name,
+      Correo: email,
+      Comentario: comment,
+      Fecha: new Date().toLocaleDateString('es-MX'),
+      Estatus: 'Pendiente'
     });
+    
+    showFormMessage('¡Gracias por tu comentario! Tu mensaje ha sido enviado correctamente.', 'success');
+    form.reset();
+  } catch (error) {
+    console.error("Error al guardar comentario:", error);
+    showFormMessage('Hubo un error al enviar tu mensaje. Por favor intenta nuevamente.', 'error');
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = originalBtnText;
+  }
 }
 
-function simulateFormSubmission() {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({ status: 'success' });
-    }, 1500);
-  });
+// Funciones auxiliares
+function isValidName(name) {
+  return /^[a-zA-ZÀ-ÿ\s']+$/.test(name);
+}
+
+function validateEmail(email) {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(String(email).toLowerCase());
+}
+
+function formatDate(dateString) {
+  try {
+    if (dateString.includes('/')) {
+      return dateString; // Ya está en formato DD/MM/YYYY
+    }
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString('es-ES', options);
+  } catch {
+    return 'Fecha desconocida';
+  }
 }
 
 function showInputError(fieldId, message) {
@@ -113,10 +231,28 @@ function showFormMessage(message, type) {
   const formMessage = document.getElementById('formMessage');
   formMessage.textContent = message;
   formMessage.className = `form-message ${type}`;
+  formMessage.style.display = 'block';
+  formMessage.style.opacity = '1';
   formMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  setTimeout(() => {
+    let opacity = 1;
+    const fadeEffect = setInterval(() => {
+      if (opacity <= 0) {
+        clearInterval(fadeEffect);
+        formMessage.style.display = 'none';
+      }
+      formMessage.style.opacity = opacity;
+      opacity -= 0.05;
+    }, 100);  
+  }, 8000);
 }
 
-function validateEmail(email) {
-  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return re.test(String(email).toLowerCase());
-}
+// Hacer funciones disponibles globalmente
+window.initCommentsSection = initCommentsSection;
+window.cargarComentarios = loadComments;
+
+// Inicialización
+document.addEventListener('DOMContentLoaded', () => {
+  initCommentsSection();
+});
