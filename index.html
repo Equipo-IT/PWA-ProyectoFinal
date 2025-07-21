@@ -107,8 +107,11 @@
       <!-- Sección 5: Comunidad -->
       <div class="section">
         <h2 class="section-title">Comunidad EcoReto</h2>
-        <div class="community-feed">
+        <div class="community-feed" id="communityFeed">
           <!-- Contenido de comentarios/interacciones -->
+          <div class="comments-loader">
+            <i class="fas fa-spinner fa-spin"></i> Cargando comentarios...
+          </div>
         </div>
       </div>
 
@@ -126,16 +129,19 @@
                 <div class="form-group">
                   <label for="name">Nombre completo</label>
                   <input type="text" id="name" name="name" placeholder="Ingresa tu nombre" required>
+                  <small class="input-error" style="display: none;"></small>
                 </div>
                 <div class="form-group">
                   <label for="email">Correo electrónico</label>
                   <input type="email" id="email" name="email" placeholder="tucorreo@ejemplo.com" required>
+                  <small class="input-error" style="display: none;"></small>
                 </div>
               </div>
               
               <div class="form-group">
                 <label for="comment">Tu mensaje</label>
                 <textarea id="comment" name="comment" rows="5" placeholder="Escribe aquí tu comentario..." required></textarea>
+                <small class="input-error" style="display: none;"></small>
               </div>
               
               <div class="form-footer">
@@ -151,10 +157,9 @@
   </main>
 
   <!-- Botón de instalación -->
-    <button id="btnInstall" class="install-btn" style="display: none;">
-      <i class="fas fa-download"></i> Instalar App
-    </button>
-
+  <button id="btnInstall" class="install-btn" style="display: none;">
+    <i class="fas fa-download"></i> Instalar App
+  </button>
 
   <!-- Footer -->
   <footer class="app-footer">
@@ -165,11 +170,42 @@
       <a href="#"><i class="fab fa-facebook"></i></a>
     </div>
   </footer>
-  <!-- JS principal como módulo -->
+
+  <!-- Firebase SDK -->
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyD-8JqtblN_oQgFB5eI-9H112zvHHsf2kk",
+    authDomain: "integradora-65813.firebaseapp.com",
+    databaseURL: "https://integradora-65813-default-rtdb.firebaseio.com",
+    projectId: "integradora-65813",
+    storageBucket: "integradora-65813.appspot.com",
+    messagingSenderId: "620376972992",
+    appId: "1:620376972992:web:b5ad8fb7106c6caddf9725"
+  };
+
+  // Inicializa Firebase
+  const app = initializeApp(firebaseConfig);
+  const database = getDatabase(app);
+  
+  // Hacer disponible para otros scripts
+  window.firebaseApp = app;
+  window.firebaseDB = database;
+  window.firebaseDBFunctions = { ref, push, set, onValue };
+  
+  console.log('Firebase inicializado correctamente');
+</script>
+  <!-- JS principal -->
   <script src="js/app.js"></script>
-  <!-- JS adicional (si no usas módulos para todo) -->
+  
+  <!-- Módulo de comentarios -->
+  <script type="module" src="js/comments.js"></script>
+  
+  <!-- JS adicional -->
   <script src="js/tips.js"></script>
-  <script src="js/comments.js"></script>
   <script src="js/pwa.js"></script>
 </body>
 </html>
