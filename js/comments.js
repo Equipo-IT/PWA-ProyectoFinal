@@ -45,7 +45,7 @@ function loadComments() {
   }
 
   const commentsRef = query(
-    ref(db, 'comentarios'),
+    ref(db, 'Comentarios'), // Cambiado a mayúscula
     orderByChild('Fecha'),
     limitToLast(50)
   );
@@ -72,12 +72,8 @@ function loadComments() {
         }
       });
 
-      // Ordenar por fecha descendente
-      commentsArray.sort((a, b) => {
-        const dateA = new Date(a.Fecha.split('/').reverse().join('/'));
-        const dateB = new Date(b.Fecha.split('/').reverse().join('/'));
-        return dateB - dateA;
-      });
+      // Ordenar por fecha descendente (simplificado para formato ISO)
+      commentsArray.sort((a, b) => new Date(b.Fecha) - new Date(a.Fecha));
 
       commentsArray.forEach(comment => {
         const commentElement = document.createElement('div');
@@ -85,9 +81,9 @@ function loadComments() {
         commentElement.innerHTML = `
           <div class="comment-header">
             <h4>${comment.Nombre || 'Anónimo'}</h4>
-            <small>${comment.Fecha || formatDate(new Date())}</small>
+            <small>${formatDate(comment.Fecha) || formatDate(new Date())}</small>
           </div>
-          <p class="comment-message">${comment.Comentario || ''}</p>
+          <p class="comment-message">${comment.ComentarioTexto || ''}</p> <!-- Campo corregido -->
         `;
         commentsContainer.appendChild(commentElement);
       });
@@ -158,15 +154,16 @@ async function handleCommentSubmit(e) {
   submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
   
   try {
-    const comentariosRef = ref(db, 'comentarios');
+    const comentariosRef = ref(db, 'Comentarios'); // Cambiado a mayúscula
     const nuevoComentarioRef = push(comentariosRef);
     
     await set(nuevoComentarioRef, {
       Nombre: name,
       Correo: email,
-      Comentario: comment,
-      Fecha: new Date().toLocaleDateString('es-MX'),
-      Estatus: 'Pendiente'
+      ComentarioTexto: comment, // Campo corregido
+      Fecha: new Date().toISOString(), // Formato ISO
+      Estatus: 'Pendiente',
+      Id: nuevoComentarioRef.key // Campo añadido
     });
     
     showFormMessage('¡Gracias por tu comentario! Tu mensaje ha sido enviado correctamente.', 'success');
@@ -180,7 +177,7 @@ async function handleCommentSubmit(e) {
   }
 }
 
-// Funciones auxiliares
+// Funciones auxiliares (sin cambios)
 function isValidName(name) {
   return /^[a-zA-ZÀ-ÿ\s']+$/.test(name);
 }
@@ -192,11 +189,21 @@ function validateEmail(email) {
 
 function formatDate(dateString) {
   try {
+    if (!dateString) return 'Fecha desconocida';
+    
+    // Si ya es una fecha formateada (contiene /)
     if (dateString.includes('/')) {
-      return dateString; // Ya está en formato DD/MM/YYYY
+      return dateString;
     }
+    
+    // Para fechas ISO
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return 'Fecha desconocida';
+    }
+    
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString('es-ES', options);
+    return date.toLocaleDateString('es-ES', options);
   } catch {
     return 'Fecha desconocida';
   }

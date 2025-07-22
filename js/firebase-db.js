@@ -1,5 +1,5 @@
 // Importa las funciones necesarias de Firebase Realtime Database
-import { getDatabase, ref, push, set, onValue, off, query, orderByChild, limitToLast, equalTo } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import { getDatabase, ref, push, set, onValue, off, query, orderByChild, limitToLast, equalTo, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 import { app } from "./firebase-config.js";
 
 // Obtiene la instancia de Realtime Database
@@ -14,22 +14,25 @@ const db = getDatabase(app);
  */
 export async function agregarComentario(nombre, correo, mensaje) {
   try {
-    const comentariosRef = ref(db, 'comentarios');
+    const comentariosRef = ref(db, 'Comentarios'); // Cambiado a mayúscula
     const nuevoComentarioRef = push(comentariosRef);
     
-    await set(nuevoComentarioRef, {
+    const comentarioData = {
       Nombre: nombre,
       Correo: correo,
-      Comentario: mensaje,
-      Fecha: new Date().toLocaleDateString('es-MX'),
-      Estatus: 'Pendiente'
-    });
+      ComentarioTexto: mensaje, // Campo corregido
+      Fecha: new Date().toISOString(), // Formato ISO estándar
+      Estatus: 'Pendiente',
+      Id: nuevoComentarioRef.key // Campo Id añadido
+    };
+    
+    await set(nuevoComentarioRef, comentarioData);
     
     console.log("Comentario guardado con ID:", nuevoComentarioRef.key);
     return { 
       exito: true, 
       id: nuevoComentarioRef.key,
-      fecha: new Date().toLocaleDateString('es-MX')
+      fecha: comentarioData.Fecha
     };
   } catch (error) {
     console.error("Error al guardar comentario:", error);
@@ -47,7 +50,7 @@ export async function agregarComentario(nombre, correo, mensaje) {
  */
 export function obtenerComentariosEnTiempoReal(callback) {
   const comentariosRef = query(
-    ref(db, 'comentarios'),
+    ref(db, 'Comentarios'), // Cambiado a mayúscula
     orderByChild('Fecha')
   );
 
@@ -60,12 +63,8 @@ export function obtenerComentariosEnTiempoReal(callback) {
       });
     });
     
-    // Ordenar por fecha descendente
-    comentarios.sort((a, b) => {
-      const dateA = new Date(a.Fecha.split('/').reverse().join('/'));
-      const dateB = new Date(b.Fecha.split('/').reverse().join('/'));
-      return dateB - dateA;
-    });
+    // Ordenar por fecha descendente (ahora compatible con ISO)
+    comentarios.sort((a, b) => new Date(b.Fecha) - new Date(a.Fecha));
     
     callback(comentarios);
   }, (error) => {
@@ -85,7 +84,7 @@ export function obtenerComentariosEnTiempoReal(callback) {
 export async function obtenerComentariosAprobados(limite = 50) {
   try {
     const comentariosRef = query(
-      ref(db, 'comentarios'),
+      ref(db, 'Comentarios'), // Cambiado a mayúscula
       orderByChild('Estatus'),
       equalTo('Aprobado'),
       limitToLast(limite)
@@ -101,12 +100,8 @@ export async function obtenerComentariosAprobados(limite = 50) {
           });
         });
         
-        // Ordenar por fecha descendente
-        comentarios.sort((a, b) => {
-          const dateA = new Date(a.Fecha.split('/').reverse().join('/'));
-          const dateB = new Date(b.Fecha.split('/').reverse().join('/'));
-          return dateB - dateA;
-        });
+        // Ordenar por fecha descendente (ahora compatible con ISO)
+        comentarios.sort((a, b) => new Date(b.Fecha) - new Date(a.Fecha));
         
         resolve(comentarios);
       }, {
@@ -126,7 +121,7 @@ export async function obtenerComentariosAprobados(limite = 50) {
  */
 export async function obtenerComentarioPorId(id) {
   try {
-    const comentarioRef = ref(db, `comentarios/${id}`);
+    const comentarioRef = ref(db, `Comentarios/${id}`); // Cambiado a mayúscula
     const snapshot = await get(comentarioRef);
     return snapshot.exists() ? { id, ...snapshot.val() } : null;
   } catch (error) {
