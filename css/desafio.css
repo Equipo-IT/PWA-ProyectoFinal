@@ -1,0 +1,211 @@
+/* Variables de color */
+:root {
+  --accent-color: #8bc34a;          /* Verde principal */
+  --secondary-color: #558b2f;       /* Verde oscuro */
+  --dark-color: #2e2e2e;            /* Texto fuerte */
+  --text-color: #555;               /* Texto normal */
+  --bg-light: #f9f9f9;              /* Fondo suave */
+  --border-color: #e0e0e0;
+}
+
+/* Contenedor principal - Diseño en cascada */
+.challenges-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  background: var(--bg-light);
+  border-radius: 16px;
+}
+
+/* Grid de desafíos */
+#challenges-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+/* Tarjeta de día */
+.challenge-day {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border-left: 5px solid var(--border-color);
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+
+/* Hover */
+.challenge-day:hover {
+  transform: translateX(6px);
+  border-left-color: var(--accent-color);
+}
+
+/* Día actual */
+.challenge-day.today {
+  border-left: 5px solid var(--accent-color);
+  background: rgba(139, 195, 74, 0.05);
+  box-shadow: 0 4px 16px rgba(139, 195, 74, 0.15);
+}
+
+/* Encabezado */
+.day-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.day-header::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--border-color);
+  border: 2px solid white;
+}
+
+.challenge-day.today .day-header::before {
+  background: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(139, 195, 74, 0.3);
+}
+
+.day-header h3 {
+  color: var(--dark-color);
+  font-size: 1.3rem;
+  margin: 0 0.5rem 0 0;
+  font-weight: 600;
+}
+
+.today-badge {
+  background: var(--accent-color);
+  color: white;
+  padding: 0.2rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+/* Contenido del desafío */
+.challenge-content {
+  padding-left: 1.5rem;
+  border-left: 2px dashed rgba(0, 0, 0, 0.1);
+  margin-left: 5px;
+}
+
+/* Iconos */
+.challenge-day i {
+  font-size: 1.5rem;
+  color: var(--secondary-color);
+  margin-right: 0.8rem;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Textos */
+.challenge-day h4 {
+  display: inline-block;
+  color: var(--dark-color);
+  font-size: 1.2rem;
+  margin: 0.5rem 0;
+  vertical-align: middle;
+}
+
+.challenge-day p {
+  color: var(--text-color);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0.5rem 0 1rem;
+}
+
+/* Tip */
+.tip-box {
+  background: rgba(139, 195, 74, 0.08);
+  padding: 0.8rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  border-left: 3px solid var(--accent-color);
+  display: flex;
+  align-items: flex-start;
+}
+
+.tip-box i {
+  color: var(--accent-color);
+  font-size: 1rem;
+  margin-right: 0.5rem;
+  margin-top: 2px;
+}
+
+/* Botón */
+.complete-btn {
+  width: 100%;
+  padding: 0.8rem;
+  background: var(--secondary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+
+.complete-btn:hover {
+  background: var(--dark-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Completado */
+.challenge-day.completed {
+  opacity: 0.8;
+}
+
+.challenge-day.completed .complete-btn {
+  background: #e0e0e0;
+  color: #888;
+  cursor: pointer;
+}
+
+.challenge-day.completed .complete-btn:hover {
+  background: #d0d0d0;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Línea de conexión vertical */
+@media (min-width: 768px) {
+  .challenge-day:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    bottom: -1rem;
+    height: 1rem;
+    width: 2px;
+    background: rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Responsivo: Ajustes móviles */
+@media (max-width: 480px) {
+  .challenge-day {
+    padding: 1rem;
+  }
+
+  .challenge-day i {
+    font-size: 1.3rem;
+  }
+
+  .complete-btn {
+    font-size: 0.85rem;
+    padding: 0.6rem;
+  }
+}
