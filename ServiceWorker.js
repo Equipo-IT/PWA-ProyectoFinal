@@ -17,6 +17,7 @@ const PRECACHE_ASSETS = [
   // CSS
   '/PWA-ProyectoFinal/css/styles.css',
   '/PWA-ProyectoFinal/css/secciones.css',
+  '/PWA-ProyectoFinal/css/organizacion.css',
   '/PWA-ProyectoFinal/css/responsive.css',
   '/PWA-ProyectoFinal/css/navbar.css',
   '/PWA-ProyectoFinal/css/layout.css',
@@ -33,10 +34,11 @@ const PRECACHE_ASSETS = [
   '/PWA-ProyectoFinal/js/comments.js',
   '/PWA-ProyectoFinal/js/calculadora.js',
   '/PWA-ProyectoFinal/js/desafio.js',
-  '/PWA-ProyectoFinal/js/comunidad.js',
+  '/PWA-ProyectoFinal/js/organizacion.js',
 
   // IMG
   '/PWA-ProyectoFinal/img/Logo1.png',
+  '/PWA-ProyectoFinal/img/Logo2.png',
   '/PWA-ProyectoFinal/img/Logo3.png',
   '/PWA-ProyectoFinal/img/Logo4.png',
   '/PWA-ProyectoFinal/img/Logo5.png',
@@ -170,10 +172,7 @@ self.addEventListener('message', (event) => {
       break;
   }
 });
-
-// ==============================
 // BACKGROUND SYNC
-// ==============================
 self.addEventListener('sync', (event) => {
   if (event.tag === 'sync-challenge-data') {
     console.log('[SW] Sincronizando desafíos...');
@@ -219,10 +218,7 @@ async function syncPendingComments() {
     }
   }
 }
-
-// ==============================
 // PUSH NOTIFICATIONS
-// ==============================
 self.addEventListener('push', (event) => {
   const data = event.data?.json() || {
     title: 'EcoReto',
@@ -257,9 +253,7 @@ self.addEventListener('notificationclick', (event) => {
   );
 });
 
-// ==============================
 // INDEXEDDB: PENDIENTES OFFLINE
-// ==============================
 function openCommentsDB() {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open('EcoRetoDB', 1);
