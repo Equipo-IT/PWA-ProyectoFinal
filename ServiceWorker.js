@@ -26,6 +26,7 @@ const PRECACHE_ASSETS = [
   '/PWA-ProyectoFinal/css/footer.css',
   '/PWA-ProyectoFinal/css/comentarios.css',
   '/PWA-ProyectoFinal/css/base.css',
+  '/PWA-ProyectoFinal/css/desafio.css',
 
   // JS
   '/PWA-ProyectoFinal/js/app.js',
@@ -35,6 +36,9 @@ const PRECACHE_ASSETS = [
   '/PWA-ProyectoFinal/js/calculadora.js',
   '/PWA-ProyectoFinal/js/desafio.js',
   '/PWA-ProyectoFinal/js/organizacion.js',
+  '/PWA-ProyectoFinal/js/firebase-config.js',
+  '/PWA-ProyectoFinal/js/firebase-db.js', 
+  '/PWA-ProyectoFinal/js/desafio.js',
 
   // IMG
   '/PWA-ProyectoFinal/img/Logo1.png',
@@ -44,7 +48,7 @@ const PRECACHE_ASSETS = [
   '/PWA-ProyectoFinal/img/Logo5.png',
   '/PWA-ProyectoFinal/img/Logo6.png',
   '/PWA-ProyectoFinal/img/Fondo1.png',
-
+  '/PWA-ProyectoFinal/img/team/brandon.jpg',
   // Fuentes y CDNs
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css',
   'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Montserrat:wght@400;700&display=swap'
