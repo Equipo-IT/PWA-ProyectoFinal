@@ -36,13 +36,13 @@
         <i class="fas fa-calculator"></i>
         <span class="tooltip">Impacto</span>
       </button>
-      <button onclick="goToSection(3)" title="Desafío" class="nav-icon">
+      <button onclick="goToSection(3)" title="Desafíos" class="nav-icon">
         <i class="fas fa-trophy"></i>
-        <span class="tooltip">Desafío</span>
+        <span class="tooltip">Desafíos</span>
       </button>
-      <button onclick="goToSection(4)" title="Comunidad" class="nav-icon">
+      <button onclick="goToSection(4)" title="Organización" class="nav-icon">
         <i class="fas fa-users"></i>
-        <span class="tooltip">Comunidad</span>
+        <span class="tooltip">Organización</span>
       </button>
       <button onclick="goToSection(5)" title="Comentarios" class="nav-icon">
         <i class="fas fa-comment"></i>
@@ -98,20 +98,17 @@
 
       <!-- Sección 4: Desafío -->
       <div class="section">
-        <h2 class="section-title">Desafío del Día</h2>
-        <div class="challenge-card">
-          <!-- Contenido del desafío -->
+        <h2 class="section-title">Desafíos Semanales</h2>
+        <div class="challenges-container">
+          <div id="challenges-grid"></div>
         </div>
       </div>
 
-      <!-- Sección 5: Comunidad -->
+    <!-- Sección 5: Organización -->
       <div class="section">
-        <h2 class="section-title">Comunidad EcoReto</h2>
-        <div class="community-feed" id="communityFeed">
-          <!-- Contenido de comentarios/interacciones -->
-          <div class="comments-loader">
-            <i class="fas fa-spinner fa-spin"></i> Cargando comentarios...
-          </div>
+        <h2 class="section-title">Nuestro Equipo</h2>
+        <div class="team-container">
+            <!-- Contenido del desafío --> <!-- Nota: Esto debería decir "equipo" -->
         </div>
       </div>
 
@@ -207,5 +204,7 @@
   <!-- JS adicional -->
   <script src="js/tips.js"></script>
   <script src="js/pwa.js"></script>
+    <script src="js/desafio.js"></script>
+  <script src="js/organizacion.js"></script>
 </body>
 </html>
