@@ -10,6 +10,7 @@
   <link rel="manifest" href="manifest.json" />
   <!-- Estilos -->
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/calculadora.css" />
   <!-- Responsive al final para que sobrescriba cuando sea necesario -->
   <link rel="stylesheet" href="css/responsive.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -91,8 +92,98 @@
       <!-- Sección 3: Calculadora -->
       <div class="section">
         <h2 class="section-title">Tu Impacto Ambiental</h2>
-        <div class="calculator">
-          <!-- Contenido de la calculadora -->
+        <div class="calculator-container">
+          <div class="calculator-card">
+            <div class="calculator-tabs">
+              <button class="tab-btn active" data-tab="transport">
+                <i class="fas fa-car"></i> Transporte
+              </button>
+              <button class="tab-btn" data-tab="energy">
+                <i class="fas fa-bolt"></i> Energía
+              </button>
+              <button class="tab-btn" data-tab="food">
+                <i class="fas fa-utensils"></i> Alimentación
+              </button>
+            </div>
+
+            <!-- Pestaña Transporte -->
+            <div class="tab-content active" id="transport-tab">
+              <div class="input-group">
+                <label for="car-km"><i class="fas fa-road"></i> Kilómetros en auto (mensuales):</label>
+                <input type="number" id="car-km" placeholder="Ej: 300">
+                <small class="input-hint"><i class="fas fa-info-circle"></i> 1km ≈ 0.12kg CO₂</small>
+              </div>
+              <div class="input-group">
+                <label for="public-transport"><i class="fas fa-bus"></i> Días usando transporte público/semana:</label>
+                <input type="number" id="public-transport" placeholder="Ej: 5">
+                <small class="input-hint"><i class="fas fa-info-circle"></i> Reduce un 70% vs auto</small>
+              </div>
+            </div>
+
+            <!-- Pestaña Energía -->
+            <div class="tab-content" id="energy-tab">
+              <div class="input-group">
+                <label for="electricity"><i class="fas fa-plug"></i> Consumo eléctrico (kWh/mes):</label>
+                <input type="number" id="electricity" placeholder="Ej: 200">
+                <small class="input-hint"><i class="fas fa-info-circle"></i> 1kWh ≈ 0.4kg CO₂</small>
+              </div>
+              <div class="input-group">
+                <label>
+                  <input type="checkbox" id="renewable-energy"> 
+                  <i class="fas fa-solar-panel"></i> ¿Usas energía renovable? (solar/eólica)
+                </label>
+              </div>
+            </div>
+
+            <!-- Pestaña Alimentación -->
+            <div class="tab-content" id="food-tab">
+              <div class="input-group">
+                <label><i class="fas fa-drumstick-bite"></i> Comidas con carne/semana:</label>
+                <input type="number" id="meals-meat" placeholder="Ej: 10">
+                <small class="input-hint"><i class="fas fa-info-circle"></i> 1 comida ≈ 3.6kg CO₂</small>
+              </div>
+              <div class="input-group">
+                <label><i class="fas fa-leaf"></i> Comidas vegetales/semana:</label>
+                <input type="number" id="meals-veg" placeholder="Ej: 11">
+                <small class="input-hint"><i class="fas fa-info-circle"></i> 1 comida ≈ 0.9kg CO₂</small>
+              </div>
+            </div>
+
+            <button id="calculate-btn" class="calculate-btn">
+              <i class="fas fa-calculator"></i> Calcular Mi Impacto
+            </button>
+            
+            <!-- Resultados -->
+            <div class="results-container hidden">
+              <h3><i class="fas fa-chart-line"></i> Tu Huella de Carbono Anual</h3>
+              <div class="co2-result">
+                <span id="co2-total">0</span> kg CO₂
+              </div>
+              <div class="comparison">
+                <div class="comparison-item">
+                  <div class="comparison-bar" style="width: 100%"></div>
+                  <span>Promedio local: <strong>8,000 kg</strong></span>
+                </div>
+                <div class="comparison-item yours">
+                  <div class="comparison-bar" id="user-comparison-bar"></div>
+                  <span>Tú: <strong id="user-comparison-text">0 kg</strong></span>
+                </div>
+              </div>
+              <div class="savings-tip" id="savings-tip"></div>
+            </div>
+          </div>
+          
+          <!-- Gráfico de desglose -->
+          <div class="breakdown-card hidden" id="breakdown-card">
+            <h3><i class="fas fa-chart-pie"></i> Desglose por Categoría</h3>
+            <div class="breakdown-chart">
+              <canvas id="co2-chart"></canvas>
+            </div>
+            <div class="action-tips">
+              <h4><i class="fas fa-lightbulb"></i> ¿Cómo reducir más?</h4>
+              <ul id="action-tips-list"></ul>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -104,11 +195,11 @@
         </div>
       </div>
 
-    <!-- Sección 5: Organización -->
+      <!-- Sección 5: Organización -->
       <div class="section">
         <h2 class="section-title">Nuestro Equipo</h2>
         <div class="team-container">
-            <!-- Contenido del desafío --> <!-- Nota: Esto debería decir "equipo" -->
+            <!-- Contenido del equipo se cargará dinámicamente desde JS -->
         </div>
       </div>
 
@@ -124,19 +215,19 @@
               
               <div class="form-row">
                 <div class="form-group">
-                  <label for="name">Nombre completo</label>
+                  <label for="name"><i class="fas fa-user"></i> Nombre completo</label>
                   <input type="text" id="name" name="name" placeholder="Ingresa tu nombre" required>
                   <small class="input-error" style="display: none;"></small>
                 </div>
                 <div class="form-group">
-                  <label for="email">Correo electrónico</label>
+                  <label for="email"><i class="fas fa-envelope"></i> Correo electrónico</label>
                   <input type="email" id="email" name="email" placeholder="tucorreo@ejemplo.com" required>
                   <small class="input-error" style="display: none;"></small>
                 </div>
               </div>
               
               <div class="form-group">
-                <label for="comment">Tu mensaje</label>
+                <label for="comment"><i class="fas fa-comment"></i> Tu mensaje</label>
                 <textarea id="comment" name="comment" rows="5" placeholder="Escribe aquí tu comentario..." required></textarea>
                 <small class="input-error" style="display: none;"></small>
               </div>
@@ -162,50 +253,51 @@
   <footer class="app-footer">
     <p>EcoReto - Contribuyendo al ODS 13: Acción por el Clima</p>
     <div class="social-links">
-      <a href="#"><i class="fab fa-twitter"></i></a>
-      <a href="#"><i class="fab fa-instagram"></i></a>
-      <a href="#"><i class="fab fa-facebook"></i></a>
+      <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+      <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
     </div>
   </footer>
 
   <!-- Firebase SDK -->
-<!-- Firebase SDK -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyD-8JqtblN_oQgFB5eI-9H112zvHHsf2kk",
-    authDomain: "integradora-65813.firebaseapp.com",
-    databaseURL: "https://integradora-65813-default-rtdb.firebaseio.com",
-    projectId: "integradora-65813",
-    storageBucket: "integradora-65813.appspot.com",
-    messagingSenderId: "620376972992",
-    appId: "1:620376972992:web:b5ad8fb7106c6caddf9725"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyD-8JqtblN_oQgFB5eI-9H112zvHHsf2kk",
+      authDomain: "integradora-65813.firebaseapp.com",
+      databaseURL: "https://integradora-65813-default-rtdb.firebaseio.com",
+      projectId: "integradora-65813",
+      storageBucket: "integradora-65813.appspot.com",
+      messagingSenderId: "620376972992",
+      appId: "1:620376972992:web:b5ad8fb7106c6caddf9725"
+    };
 
-  // Inicializa Firebase
-  const app = initializeApp(firebaseConfig);
-  const database = getDatabase(app);
+    // Inicializa Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    
+    // Hacer disponible para otros scripts
+    window.firebaseApp = app;
+    window.firebaseDB = database;
+    window.firebaseDBFunctions = { ref, push, set, onValue };
+    
+    console.log('Firebase inicializado correctamente');
+  </script>
+
+  <!-- Chart.js para gráficos -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
-  // Hacer disponible para otros scripts
-  window.firebaseApp = app;
-  window.firebaseDB = database;
-  window.firebaseDBFunctions = { ref, push, set, onValue };
-  
-  console.log('Firebase inicializado correctamente');
-</script>
   <!-- JS principal -->
   <script src="js/app.js"></script>
   
-  <!-- Módulo de comentarios -->
+  <!-- Módulos JS -->
   <script type="module" src="js/comments.js"></script>
-  
-  <!-- JS adicional -->
   <script src="js/tips.js"></script>
   <script src="js/pwa.js"></script>
-    <script src="js/desafio.js"></script>
+  <script src="js/desafio.js"></script>
   <script src="js/organizacion.js"></script>
+  <script src="js/calculadora.js"></script>
 </body>
-
 </html>
