@@ -48,6 +48,7 @@ const PRECACHE_ASSETS = [
   '/PWA-ProyectoFinal/img/team/brandon.jpg',
   '/PWA-ProyectoFinal/img/team/ricardo.jpg',
   '/PWA-ProyectoFinal/img/team/fransicso.jpg',
+  '/PWA-ProyectoFinal/img/team/david.jpg',
   '/PWA-ProyectoFinal/img/Logo1.png',
   '/PWA-ProyectoFinal/img/Logo2.png',
   '/PWA-ProyectoFinal/img/Logo3.png',
