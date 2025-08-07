@@ -46,6 +46,7 @@ const PRECACHE_ASSETS = [
 
   // Imágenes (Actualiza con tus rutas)
   '/PWA-ProyectoFinal/img/team/brandon.jpg',
+  '/PWA-ProyectoFinal/img/team/ricardo.jpg',
   '/PWA-ProyectoFinal/img/Logo1.png',
   '/PWA-ProyectoFinal/img/Logo2.png',
   '/PWA-ProyectoFinal/img/Logo3.png',
