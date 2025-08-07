@@ -191,3 +191,44 @@
     font-size: 1.4rem;
   }
 }
+@media (max-width: 768px) {
+  /* Nuevos estilos responsive */
+  .app-intro h1 {
+    font-size: 1.8rem;
+  }
+  
+  .intro-text {
+    font-size: 1rem;
+  }
+  
+  .value-proposition h2 {
+    font-size: 1.5rem;
+  }
+  
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .feature-card {
+    padding: 1.5rem;
+  }
+  
+  .feature-card i {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-intro {
+    padding: 0.5rem;
+  }
+  
+  .app-intro h1 {
+    font-size: 1.6rem;
+  }
+  
+  .feature-card {
+    padding: 1.2rem;
+  }
+}
