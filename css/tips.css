@@ -132,19 +132,42 @@
   .tips-section {
     padding: 2rem 0.5rem;
   }
-  
+
   .tip-card {
     padding: 1.8rem;
   }
-  
+
   .tip-icon-container {
     width: 50px;
     height: 50px;
     font-size: 1.5rem;
     margin-right: 1.2rem;
   }
-  
+
   .tip-card h3 {
     font-size: 1.4rem;
+  }
+
+  /* Ajustes nuevos para que los botones se vean bien */
+  .tip-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .tip-progress {
+    font-size: 0.85rem;
+  }
+
+  .tip-nav {
+    justify-content: center;
+    width: 100%;
+    gap: 1rem;
+  }
+
+  .tip-nav-btn {
+    width: 48px;
+    height: 48px;
+    font-size: 1.1rem;
   }
 }
