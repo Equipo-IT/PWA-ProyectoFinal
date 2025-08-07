@@ -2,26 +2,26 @@
 const teamMembers = [
   {
     name: "Brandon Roel Martínez Rivas",
-    role: "Líder del Proyecto",
-    bio: "Desarrollador full-stack con enfoque en soluciones sostenibles. Coordina el equipo y arquitectura del proyecto.",
-    photo: "img/team/brandon.jpg" // Asegúrate de tener esta imagen
+    role: "Desarrollador principal de la aplicación PWA EcoReto",
+    bio: "Encargado del desarrollo integral de la aplicación web progresiva (PWA) EcoReto.",
+    photo: "img/team/brandon.jpg"
   },
   {
     name: "Ricardo Guadalupe Vásquez Hernández",
-    role: "Experto en UX/UI",
-    bio: "Diseñador de interfaces centradas en la experiencia de usuario y accesibilidad.",
+    role: "Desarrollador del videojuego Guardianes del Clima",
+    bio: "Responsable del diseño y desarrollo técnico del videojuego educativo Guardianes del Clima.",
     photo: "img/team/ricardo.jpg"
   },
   {
     name: "Francisco Javier Valerio Lara",
-    role: "Desarrollador Backend",
-    bio: "Especialista en bases de datos y lógica de servidor para aplicaciones escalables.",
+    role: "Desarrollador móvil de EcoAdmin",
+    bio: "Especialista en el desarrollo de la aplicación móvil para la administración del sistema EcoAdmin.",
     photo: "img/team/francisco.jpg"
   },
   {
     name: "David Alessandro Martínez Valdés",
-    role: "Especialista en Contenidos",
-    bio: "Crea contenido educativo sobre sostenibilidad y cambio climático.",
+    role: "Asistente de desarrollo del videojuego Guardianes del Clima",
+    bio: "Colaboró en tareas de apoyo técnico y creativo durante la creación del videojuego Guardianes del Clima.",
     photo: "img/team/david.jpg"
   }
 ];
