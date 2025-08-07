@@ -28,6 +28,7 @@ const PRECACHE_ASSETS = [
   '/PWA-ProyectoFinal/css/responsive.css',
   '/PWA-ProyectoFinal/css/secciones.css',
   '/PWA-ProyectoFinal/css/styles.css',
+  '/PWA-ProyectoFinal/css/tips.css',
 
   // JS
   '/PWA-ProyectoFinal/js/app.js',
