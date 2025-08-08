@@ -1,6 +1,14 @@
-// Obtener instancias de Firebase
-const db = window.firebaseDB;
-const { ref, push, set, onValue, query, orderByChild, limitToLast } = window.firebaseDBFunctions || {};
+// Importaciones de Firebase
+import { 
+  db, 
+  ref, 
+  push, 
+  set, 
+  onValue, 
+  query, 
+  orderByChild, 
+  limitToLast 
+} from './firebase-config.js';
 
 // Función principal para inicializar la sección de comentarios
 export function initCommentsSection() {
@@ -39,71 +47,73 @@ export function initCommentsSection() {
 
 // Cargar comentarios
 function loadComments() {
-  if (!db || !ref || !onValue) {
-    console.error('Funciones de Firebase no disponibles');
-    return;
-  }
+  try {
+    const commentsRef = query(
+      ref(db, 'Comentarios'),
+      orderByChild('Fecha'),
+      limitToLast(50)
+    );
 
-  const commentsRef = query(
-    ref(db, 'Comentarios'), // Cambiado a mayúscula
-    orderByChild('Fecha'),
-    limitToLast(50)
-  );
-
-  const commentsContainer = document.getElementById('communityFeed');
-  
-  if (!commentsContainer) return;
-  
-  commentsContainer.innerHTML = '<div class="loader"><i class="fas fa-spinner fa-spin"></i> Cargando comentarios...</div>';
-
-  onValue(commentsRef, (snapshot) => {
-    const data = snapshot.val();
-    commentsContainer.innerHTML = '';
+    const commentsContainer = document.getElementById('communityFeed');
     
-    if (data) {
-      const commentsArray = [];
+    if (!commentsContainer) {
+      console.warn('Contenedor de comentarios no encontrado');
+      return;
+    }
+    
+    commentsContainer.innerHTML = '<div class="loader"><i class="fas fa-spinner fa-spin"></i> Cargando comentarios...</div>';
+
+    onValue(commentsRef, (snapshot) => {
+      const data = snapshot.val();
+      commentsContainer.innerHTML = '';
       
-      Object.entries(data).forEach(([key, comment]) => {
-        if (comment.Estatus === 'Aprobado') {
-          commentsArray.push({
-            id: key,
-            ...comment
-          });
-        }
-      });
+      if (data) {
+        const commentsArray = [];
+        
+        Object.entries(data).forEach(([key, comment]) => {
+          if (comment.Estatus === 'Aprobado') {
+            commentsArray.push({
+              id: key,
+              ...comment
+            });
+          }
+        });
 
-      // Ordenar por fecha descendente (simplificado para formato ISO)
-      commentsArray.sort((a, b) => new Date(b.Fecha) - new Date(a.Fecha));
+        // Ordenar por fecha descendente
+        commentsArray.sort((a, b) => new Date(b.Fecha) - new Date(a.Fecha));
 
-      commentsArray.forEach(comment => {
-        const commentElement = document.createElement('div');
-        commentElement.className = 'comment-card';
-        commentElement.innerHTML = `
-          <div class="comment-header">
-            <h4>${comment.Nombre || 'Anónimo'}</h4>
-            <small>${formatDate(comment.Fecha) || formatDate(new Date())}</small>
-          </div>
-          <p class="comment-message">${comment.ComentarioTexto || ''}</p> <!-- Campo corregido -->
-        `;
-        commentsContainer.appendChild(commentElement);
-      });
-    } else {
-      commentsContainer.innerHTML = '<p class="no-comments">No hay comentarios aún. ¡Sé el primero!</p>';
-    }
-  }, (error) => {
-    console.error("Error al cargar comentarios:", error);
-    if (commentsContainer) {
-      commentsContainer.innerHTML = '<p class="error-comments">Error al cargar comentarios</p>';
-    }
-  });
+        commentsArray.forEach(comment => {
+          const commentElement = document.createElement('div');
+          commentElement.className = 'comment-card';
+          commentElement.innerHTML = `
+            <div class="comment-header">
+              <h4>${sanitizeHTML(comment.Nombre) || 'Anónimo'}</h4>
+              <small>${formatDate(comment.Fecha) || formatDate(new Date())}</small>
+            </div>
+            <p class="comment-message">${sanitizeHTML(comment.ComentarioTexto) || ''}</p>
+          `;
+          commentsContainer.appendChild(commentElement);
+        });
+      } else {
+        commentsContainer.innerHTML = '<p class="no-comments">No hay comentarios aún. ¡Sé el primero!</p>';
+      }
+    }, (error) => {
+      console.error("Error al cargar comentarios:", error);
+      if (commentsContainer) {
+        commentsContainer.innerHTML = '<p class="error-comments">Error al cargar comentarios</p>';
+      }
+    });
+  } catch (error) {
+    console.error('Error en loadComments:', error);
+  }
 }
 
 // Manejar envío de comentarios
 async function handleCommentSubmit(e) {
   e.preventDefault();
   
-  if (!db || !ref || !push || !set) {
-    console.error('Funciones de Firebase no disponibles');
+  if (!db) {
+    console.error('Firebase no inicializado');
     return;
   }
 
@@ -154,16 +164,16 @@ async function handleCommentSubmit(e) {
   submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
   
   try {
-    const comentariosRef = ref(db, 'Comentarios'); // Cambiado a mayúscula
+    const comentariosRef = ref(db, 'Comentarios');
     const nuevoComentarioRef = push(comentariosRef);
     
     await set(nuevoComentarioRef, {
-      Nombre: name,
-      Correo: email,
-      ComentarioTexto: comment, // Campo corregido
-      Fecha: new Date().toISOString(), // Formato ISO
+      Nombre: sanitizeHTML(name),
+      Correo: sanitizeHTML(email),
+      ComentarioTexto: sanitizeHTML(comment),
+      Fecha: new Date().toISOString(),
       Estatus: 'Pendiente',
-      Id: nuevoComentarioRef.key // Campo añadido
+      Id: nuevoComentarioRef.key
     });
     
     showFormMessage('¡Gracias por tu comentario! Tu mensaje ha sido enviado correctamente.', 'success');
@@ -177,9 +187,9 @@ async function handleCommentSubmit(e) {
   }
 }
 
-// Funciones auxiliares (sin cambios)
+// Funciones auxiliares
 function isValidName(name) {
-  return /^[a-zA-ZÀ-ÿ\s']+$/.test(name);
+  return /^[a-zA-ZÀ-ÿ\s']{2,50}$/.test(name);
 }
 
 function validateEmail(email) {
@@ -191,18 +201,22 @@ function formatDate(dateString) {
   try {
     if (!dateString) return 'Fecha desconocida';
     
-    // Si ya es una fecha formateada (contiene /)
     if (dateString.includes('/')) {
       return dateString;
     }
     
-    // Para fechas ISO
     const date = new Date(dateString);
     if (isNaN(date.getTime())) {
       return 'Fecha desconocida';
     }
     
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const options = { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    };
     return date.toLocaleDateString('es-ES', options);
   } catch {
     return 'Fecha desconocida';
@@ -211,7 +225,10 @@ function formatDate(dateString) {
 
 function showInputError(fieldId, message) {
   const input = document.getElementById(fieldId);
+  if (!input) return;
+  
   const formGroup = input.closest('.form-group');
+  if (!formGroup) return;
   
   let errorElement = formGroup.querySelector('.input-error');
   if (!errorElement) {
@@ -227,7 +244,11 @@ function showInputError(fieldId, message) {
 
 function removeInputError(fieldId) {
   const input = document.getElementById(fieldId);
+  if (!input) return;
+  
   const formGroup = input.closest('.form-group');
+  if (!formGroup) return;
+  
   const errorElement = formGroup.querySelector('.input-error');
   if (errorElement) {
     errorElement.style.display = 'none';
@@ -236,6 +257,8 @@ function removeInputError(fieldId) {
 
 function showFormMessage(message, type) {
   const formMessage = document.getElementById('formMessage');
+  if (!formMessage) return;
+  
   formMessage.textContent = message;
   formMessage.className = `form-message ${type}`;
   formMessage.style.display = 'block';
@@ -255,11 +278,14 @@ function showFormMessage(message, type) {
   }, 8000);
 }
 
-// Hacer funciones disponibles globalmente
-window.initCommentsSection = initCommentsSection;
-window.cargarComentarios = loadComments;
+// Seguridad: Sanitizar HTML
+function sanitizeHTML(str) {
+  if (!str) return '';
+  return str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
 
-// Inicialización
-document.addEventListener('DOMContentLoaded', () => {
-  initCommentsSection();
-});
+// Hacer funciones disponibles globalmente si es necesario
+if (typeof window !== 'undefined') {
+  window.initCommentsSection = initCommentsSection;
+  window.cargarComentarios = loadComments;
+}

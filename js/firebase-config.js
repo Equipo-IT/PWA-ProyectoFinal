@@ -1,4 +1,4 @@
-// Importa las funciones necesarias
+// Importa las funciones necesarias de Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { 
   getDatabase, 
@@ -29,7 +29,22 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// Exportar las funciones necesarias
+// Objeto con todas las funciones de Firebase Realtime Database
+const firebaseFunctions = {
+  db,
+  ref: (path) => ref(db, path),
+  push,
+  set,
+  onValue,
+  off,
+  query,
+  orderByChild,
+  limitToLast,
+  equalTo,
+  get
+};
+
+// Exporta las funciones individualmente
 export { 
   db,
   ref,
@@ -44,3 +59,19 @@ export {
   get,
   app
 };
+
+// También exporta el objeto completo y lo hace disponible globalmente
+export default firebaseFunctions;
+window.firebaseDB = db;
+window.firebaseDBFunctions = firebaseFunctions;
+
+// Función de verificación para uso global
+window.verifyFirebase = () => {
+  if (!app || !db) {
+    console.error('Firebase no se inicializó correctamente');
+    return false;
+  }
+  return true;
+};
+
+console.log('Firebase configurado correctamente');
