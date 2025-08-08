@@ -15,17 +15,18 @@ document.addEventListener('DOMContentLoaded', () => {
   showSection(currentSection);
   updateActiveNavIcon();
   
-  // Inicializa módulos
-  if (typeof initTipsSection === 'function') initTipsSection();
-  if (typeof initCommentsSection === 'function') initCommentsSection();
-  if (typeof initComunidad === 'function') initComunidad();
-  
   // PWA
   registerServiceWorker();
   setupInstallPrompt();
   
   // Configura eventos
   setupEventListeners();
+
+  // Inicializa módulos
+  if (typeof initTipsSection === 'function') initTipsSection();
+  if (typeof initCommentsSection === 'function') initCommentsSection();
+  if (typeof initComunidad === 'function') initComunidad();
+  
 });
 
 // Configura eventos globales
